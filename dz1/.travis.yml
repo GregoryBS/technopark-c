@@ -2,22 +2,39 @@ language: c
 
 compiler:
   - gcc
+  - g++
 
-before_install:
+env:
+  global:
+  - CODECOV_TOKEN="13ac58ad-1484-4db4-a4e9-71545eaf5874"
+
+install:
   - sudo apt-get update
   - sudo apt-get install valgrind
   - sudo apt-get install cppcheck
   - sudo apt-get install cmake
+  - sudo apt-get install lcov
+  - sudo apt-get install libgtest-dev
+  - cd /usr/src/gtest
+  - sudo cmake CMakeLists.txt
+  - sudo make
+  - sudo cp *.a /usr/lib
+  - cd -
 
 os:
   - linux
 
+before_script:
+  - cd dz1
+  - mkdir build
+  - cd build
+  - cmake ..
+
 script:
-  - cmake
   - make main.out
   - make test.out
-  - valgrind ./main.out < in.txt
-  - cppcheck —inconclusive —enable=all —check-config —suppress=missingIncludeSystem -q -v --error-exitcode=1 --std=c99
+  - valgrind ./main.out < ../in.txt
+  - cppcheck —inconclusive —enable=all —check-config —suppress=missingIncludeSystem -q -v --error-exitcode=1 ..
   - ./test.out
 
 after_script:
