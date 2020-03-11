@@ -96,7 +96,7 @@ TEST(read, ok)
 {
     sport_result *r = NULL;
     int n = 0;
-    freopen("in_3.txt", "r", stdin);
+    freopen("../in.txt", "r", stdin);
     int rc = read_results(&r, &n);
     ASSERT_EQ(rc, OK);
     ASSERT_EQ(n, 1);
