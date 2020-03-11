@@ -99,7 +99,7 @@ TEST(read, ok)
     freopen("../in.txt", "r", stdin);
     int rc = read_results(&r, &n);
     ASSERT_EQ(rc, OK);
-    ASSERT_EQ(n, 1);
+    ASSERT_EQ(n, 12);
 }
 
 int main(int argc, char **argv) 
