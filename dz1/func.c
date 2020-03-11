@@ -1,8 +1,8 @@
 #include "func.h"
 
-void insert_index(const sport_result *arr, const int cur, int *index);
+void insert_index(const sport_result *arr, const int cur, int index[BEST_COUNT]);
 
-int find_best(const sport_result *arr, const int n, int *index)
+int find_best(const sport_result *arr, const int n, int index[BEST_COUNT])
 {
     if (!arr || !index)
         return ERR_PARAM;
@@ -16,7 +16,7 @@ int find_best(const sport_result *arr, const int n, int *index)
     return OK;
 }
 
-void insert_index(const sport_result *arr, const int cur, int *index)
+void insert_index(const sport_result *arr, const int cur, int index[BEST_COUNT])
 {
     int i = 0;
     int flag = TRUE;

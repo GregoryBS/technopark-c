@@ -6,6 +6,6 @@
 #define TRUE 1
 #define FALSE 0
 
-int find_best(const sport_result *arr, const int n, int *index);
+int find_best(const sport_result *arr, const int n, int index[BEST_COUNT]);
 
 #endif
