@@ -18,23 +18,23 @@ TEST(alloc, err_count)
     ASSERT_EQ(rc, ERR_PARAM);
 }
 
-TEST(process, err_pointer)
+TEST(process, err_pointer_1)
 {
     int a[BEST_COUNT] = {0};
     int rc = find_best(NULL, 1, a);
     ASSERT_EQ(rc, ERR_PARAM);
 }
 
-TEST(process, err_pointer)
+TEST(process, err_pointer_2)
 {
-    sport_result r = {1, 2, "name", 3};
+    sport_result r = {1, 2, (char*)"name", 3};
     int rc = find_best(&r, 1, NULL);
     ASSERT_EQ(rc, ERR_PARAM);
 }
 
 TEST(process, zero_count)
 {
-    sport_result r = {1, 2, "name", 3};
+    sport_result r = {1, 2, (char*)"name", 3};
     int a[BEST_COUNT] = {0};
     int rc = find_best(&r, 0, a);
     ASSERT_EQ(rc, OK);
@@ -43,7 +43,7 @@ TEST(process, zero_count)
 
 TEST(process, ok)
 {
-    sport_result r[2] = {{1, 2, "name", 3}, {2, 3, "name2", 5}};
+    sport_result r[2] = {{1, 2, (char*)"name", 3}, {2, 3, (char*)"name2", 5}};
     int a[BEST_COUNT] = {0};
     int rc = find_best(r, 2, a);
     ASSERT_EQ(rc, OK);
@@ -51,43 +51,43 @@ TEST(process, ok)
     ASSERT_EQ(a[1], 0);
 }
 
-TEST(read, err_pointer)
+TEST(read, err_pointer_1)
 {
     sport_result *r = NULL;
     int rc = read_results(&r, NULL);
     ASSERT_EQ(rc, ERR_PARAM);
 }
 
-TEST(read, err_pointer)
+TEST(read, err_pointer_2)
 {
     int n = 0;
     int rc = read_results(NULL, &n);
     ASSERT_EQ(rc, ERR_PARAM);
 }
 
-TEST(read, err_read)
+TEST(read, err_read_1)
 {
     sport_result *r = NULL;
     int n = 0;
-    freopen("in_1.txt", "r", stdin);
+    freopen("../in_1.txt", "r", stdin);
     int rc = read_results(&r, &n);
     ASSERT_EQ(rc, ERR_IO);
 }
 
-TEST(read, err_read)
+TEST(read, err_read_2)
 {
     sport_result *r = NULL;
     int n = 0;
-    freopen("in_2.txt", "r", stdin);
+    freopen("../in_2.txt", "r", stdin);
     int rc = read_results(&r, &n);
     ASSERT_EQ(rc, ERR_IO);
 }
 
-TEST(read, err_read)
+TEST(read, err_read_3)
 {
     sport_result *r = NULL;
     int n = 0;
-    freopen("in_3.txt", "r", stdin);
+    freopen("../in_3.txt", "r", stdin);
     int rc = read_results(&r, &n);
     ASSERT_EQ(rc, ERR_IO);
 }

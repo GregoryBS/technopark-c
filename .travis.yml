@@ -2,7 +2,6 @@ language: c
 
 compiler:
   - gcc
-  - g++
 
 env:
   global:
@@ -34,12 +33,12 @@ script:
   - make main.out
   - make test.out
   - valgrind ./main.out < ../in.txt
-  - cppcheck —inconclusive —enable=all —check-config —suppress=missingIncludeSystem -q -v --error-exitcode=1 ..
+  - cppcheck —inconclusive —enable=all —check-config —suppress=missingIncludeSystem -q -v --error-exitcode=1 ../
   - ./test.out
 
 after_script:
   - lcov --directory . --capture --output-file coverage.info
   - lcov --remove coverage.info '/usr/*' "${HOME}"'/.cache/*' --output-file coverage.info
   - lcov --list coverage.info
-  - bash <(curl -s https://codecov.io/bash) -f coverage.info || echo "Codecov did not collect coverage reports"
+  - bash <(curl -s https://codecov.io/bash) -f coverage.info
   - make clean

@@ -20,4 +20,4 @@ target_link_libraries(main.out _files)
 
 add_executable(test.out test.cpp)
 target_link_libraries(test.out _files)
-target_link_libraries(tests.out ${GTEST_LIBRARIES} pthread)
+target_link_libraries(test.out ${GTEST_LIBRARIES} pthread)
