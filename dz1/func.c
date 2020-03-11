@@ -22,7 +22,8 @@ void insert_index(const sport_result *arr, const int cur, int *index)
     int flag = TRUE;
     while (flag && i < BEST_COUNT)
     {
-        if (index[i] < 0 || arr[cur].checkpoints > arr[index[i]].checkpoints || arr[index[i]].time - arr[cur].time > EPS)
+        if (index[i] < 0 || arr[cur].checkpoints > arr[index[i]].checkpoints \
+            || arr[index[i]].time - arr[cur].time > EPS)
             flag = FALSE;
         else
             i++;

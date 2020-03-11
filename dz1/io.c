@@ -43,7 +43,8 @@ void write_best(const sport_result *arr, const int *index)
 
 void write_team(const sport_result team)
 {
-	printf("%d %d %f %s\n", team.number, team.checkpoints, team.time, team.name);
+	printf("%d %d %f %s\n", team.number, team.checkpoints, team.time, \
+			team.name);
 }
 
 int read_team_name(char **name)

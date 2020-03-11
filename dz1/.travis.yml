@@ -7,14 +7,18 @@ before_install:
   - sudo apt-get update
   - sudo apt-get install valgrind
   - sudo apt-get install cppcheck
+  - sudo apt-get install cmake
 
 os:
   - linux
 
 script:
+  - cmake
+  - make main.out
   - make test.out
-  - valgrind ./test.out
-  - cppcheck —inconclusive —enable=all —check-config —suppress=missingIncludeSystem -q --std=c99
+  - valgrind ./main.out < in.txt
+  - cppcheck —inconclusive —enable=all —check-config —suppress=missingIncludeSystem -q -v --error-exitcode=1 --std=c99
+  - ./test.out
 
 after_script:
   - make clean
