@@ -10,8 +10,7 @@ find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
 set(FILES
-        io.c
-        mem.c
+        sport_result_io.c
         func.c)
 add_library(_files STATIC ${FILES})
 

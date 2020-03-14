@@ -16,25 +16,26 @@ int find_best(const sport_result *arr, const int n, int index[BEST_COUNT])
     return OK;
 }
 
-void insert_index(const sport_result *arr, const int cur, int index[BEST_COUNT])
+void insert_index(const sport_result *arr, const int cur, int idx[BEST_COUNT])
 {
     int i = 0;
     int flag = TRUE;
     while (flag && i < BEST_COUNT)
     {
-        if (index[i] < 0 || arr[cur].checkpoints > arr[index[i]].checkpoints \
-            || arr[index[i]].time - arr[cur].time > EPS)
+        if (idx[i] < 0 || arr[cur].checkpoints > arr[idx[i]].checkpoints || \
+            (arr[cur].checkpoints == arr[idx[i]].checkpoints && \
+            arr[idx[i]].time - arr[cur].time > EPS))
             flag = FALSE;
         else
             i++;
     }
     if (!flag)
     {
-        if (index[i] >= 0)
+        if (idx[i] >= 0)
         {
             for (int j = BEST_COUNT - 1; j > i; j--)
-                index[j] = index[j - 1];
+                idx[j] = idx[j - 1];
         }
-        index[i] = cur;
+        idx[i] = cur;
     }
 }
