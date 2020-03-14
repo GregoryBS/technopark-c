@@ -5,6 +5,23 @@ extern "C" {
 #include "func.h"
 }
 
+TEST(free_mem, err_pointer)
+{
+    EXPECT_EQ(free_mem(NULL, 1), ERR_PARAM);
+}
+
+TEST(write, err_pointer_1)
+{
+    int a[BEST_COUNT] = { 0 };
+    EXPECT_EQ(write_best(NULL, a), ERR_PARAM);
+}
+
+TEST(write, err_pointer_2)
+{
+    sport_result r = {1, 2, (char*)"name", 3};
+    EXPECT_EQ(write_best(&r, NULL), ERR_PARAM);
+}
+
 TEST(process, err_pointer_1)
 {
     int a[BEST_COUNT] = {0};
@@ -22,7 +39,7 @@ TEST(process, err_pointer_2)
 TEST(process, zero_count)
 {
     sport_result r = {1, 2, (char*)"name", 3};
-    int a[BEST_COUNT] = {0};
+    int a[BEST_COUNT] = { 0 };
     int rc = find_best(&r, 0, a);
     EXPECT_EQ(rc, OK);
     EXPECT_EQ(a[0], -1);
@@ -31,7 +48,7 @@ TEST(process, zero_count)
 TEST(process, ok)
 {
     sport_result r[2] = {{1, 2, (char*)"name", 3}, {2, 3, (char*)"name2", 5}};
-    int a[BEST_COUNT] = {0};
+    int a[BEST_COUNT] = { 0 };
     int rc = find_best(r, 2, a);
     EXPECT_EQ(rc, OK);
     EXPECT_EQ(a[0], 1);

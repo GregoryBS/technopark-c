@@ -55,6 +55,7 @@ int write_best(const sport_result *results, const int index[BEST_COUNT])
         write_team(results[index[i]]);
         i++;
     }
+    return OK;
 }
 
 void write_team(const sport_result team)
