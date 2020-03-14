@@ -15,6 +15,6 @@ int free_mem(sport_result *results, const int n);
 
 int read_results(sport_result **results, int *n);
 
-void write_best(const sport_result *results, const int *index);
+int write_best(const sport_result *results, const int index[BEST_COUNT]);
 
 #endif

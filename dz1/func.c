@@ -16,6 +16,8 @@ int find_best(const sport_result *arr, const int n, int index[BEST_COUNT])
     return OK;
 }
 
+/* Поиск места в массиве idx индексов лучших результатов для текущего 
+   результата, и вставка его в idx */
 void insert_index(const sport_result *arr, const int cur, int idx[BEST_COUNT])
 {
     int i = 0;

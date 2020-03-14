@@ -43,8 +43,11 @@ int read_results(sport_result **results, int *n)
     return rc;
 }
 
-void write_best(const sport_result *results, const int *index)
+int write_best(const sport_result *results, const int index[BEST_COUNT])
 {
+    if (!results || !index)
+        return ERR_PARAM;
+    
     printf("Number Checkpoints Time Name\n");
     int i = 0;
     while (index[i] >= 0 && i < BEST_COUNT)
