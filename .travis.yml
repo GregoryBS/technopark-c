@@ -32,8 +32,6 @@ before_script:
 script:
   - make st_main.out
   - make dyn_main.out
-  - valgrind ./st_main.out ../tests was
-  - valgrind ./dyn_main.out ../tests was
   - sh ../diff_test.sh
   - cppcheck —inconclusive —enable=all —check-config —suppress=missingIncludeSystem -q -v --error-exitcode=1 ../
   - make st_test.out
