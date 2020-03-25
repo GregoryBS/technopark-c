@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     clock_t t1 = clock();
     int rc = find_topfiles(&result, argv[1], argv[2]);
     clock_t t2 = clock();
-    printf("Time of performing (ms): %ld\n", (long int) (t2 - t1));
+    printf("Time of performing (mks): %ld\n", (long int) (t2 - t1));
     if (rc == OK)
         rc = write_results(&result);
     else

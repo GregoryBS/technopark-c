@@ -1,28 +1,5 @@
-#include <stdlib.h>
-#include <sys/sysinfo.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/sem.h>
-#include <sys/stat.h>
-#include<sys/shm.h>
 #include "lib.h"
-
-typedef struct array_t
-{
-    char **data;
-    int len;
-    int size;
-    int step;
-} dyn_array;
-
-int get_filenames_array(dyn_array *f_names, DIR *dp);
-
-int run_process(topfiles *res, dyn_array *f_names, const char *str, \
-               int begin, int size, struct sembuf *start, struct sembuf *end,\
-               int sem_id);
-
-int myround(float num);
+#include "dynamic.h"
 
 int find_topfiles(topfiles *res, const char *dir_name, const char *str)
 {
@@ -76,7 +53,6 @@ int find_topfiles(topfiles *res, const char *dir_name, const char *str)
                 }
                 *res = *shbuf;
                 shmdt(shbuf);
-                chdir("..");
             }
         }
         free(filenames.data);

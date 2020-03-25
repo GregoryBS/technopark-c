@@ -68,7 +68,6 @@ int get_str_count(const char *file, const char *str, int *count)
             else
                 k = 0;
         }
-        //printf("%s %d\n", file, *count);
         fclose(f);
     }
     else

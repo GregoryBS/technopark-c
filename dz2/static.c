@@ -18,7 +18,6 @@ int find_topfiles(topfiles *res, const char *dir_name, const char *str)
             if (flag == OK)
                 change_result(res, dirp->d_name, count);
         }
-        chdir("..");
         closedir(dp);
     }
     else
