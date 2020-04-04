@@ -1,20 +1,11 @@
 #include <gtest/gtest.h>
 
 extern "C" {
-#include "lib.h"
+#include "static.h"
+#include "dynamic.h"
 }
 
 #define ERR_CMP 1
-
-int cmp_int_array(int arr1[TOP_COUNT], int arr2[TOP_COUNT])
-{
-    for (int i = 0; i < TOP_COUNT; i++)
-    {
-        if (arr1[i] != arr2[i])
-            return ERR_CMP;
-    }
-    return OK;
-}
 
 int cmp_char_array(char **arr1, char **arr2, int n)
 {
@@ -51,7 +42,7 @@ TEST(change_result, count_less)
                              (char*)"4.txt", (char*)"5.txt" };
     int rc = change_result(&var, "test.txt", 0);
     EXPECT_EQ(OK, rc);
-    EXPECT_EQ(OK, cmp_int_array(var.count, count));
+    EXPECT_EQ(OK, memcmp(var.count, count, TOP_COUNT * sizeof(int)));
     EXPECT_EQ(OK, cmp_char_array(name, var.name, TOP_COUNT));
 }
 
@@ -64,7 +55,7 @@ TEST(change_result, count_more)
                              (char*)"6.txt", (char*)"4.txt"};
     int rc = change_result(&var, "6.txt", 2);
     EXPECT_EQ(OK, rc);
-    EXPECT_EQ(OK, cmp_int_array(var.count, count));
+    EXPECT_EQ(OK, memcmp(var.count, count, TOP_COUNT * sizeof(int)));
     EXPECT_EQ(OK, cmp_char_array(name, var.name, TOP_COUNT));
 }
 
@@ -116,10 +107,10 @@ TEST(find_topfiles, no_str)
     int count[TOP_COUNT] = { 0 };
     int rc = find_topfiles(&var, "../tests", "no_such_str");
     EXPECT_EQ(OK, rc);
-    EXPECT_EQ(OK, cmp_int_array(var.count, count));
+    EXPECT_EQ(OK, memcmp(var.count, count, TOP_COUNT * sizeof(int)));
 }
 
-TEST(find_topfiles, ok)
+TEST(find_topfiles, correct_data)
 {
     topfiles var = { { 0 }, { 0 } };
     int count[TOP_COUNT] = { 33, 32, 26, 22, 19 };
@@ -127,7 +118,70 @@ TEST(find_topfiles, ok)
                              (char*)"15.txt", (char*)"21.txt"};                       
     int rc = find_topfiles(&var, "../tests", "was");
     EXPECT_EQ(OK, rc);
-    EXPECT_EQ(OK, cmp_int_array(var.count, count));
+    EXPECT_EQ(OK, memcmp(var.count, count, TOP_COUNT * sizeof(int)));
+    EXPECT_EQ(OK, cmp_char_array(name, var.name, TOP_COUNT));
+}
+
+TEST(myround, less)
+{
+    EXPECT_EQ(0, myround(0.3));
+}
+
+TEST(myround, more)
+{
+    EXPECT_EQ(1, myround(0.5));
+}
+
+TEST(get_filenames_array, err_pointer_1)
+{
+    EXPECT_EQ(ERR_PARAM, get_filenames_array(NULL, "../tests"));
+    EXPECT_EQ(ERR_PARAM, free_filenames_array(NULL));
+}
+
+TEST(get_filenames_array, err_pointer_2)
+{
+    dyn_array filenames = { NULL, 0, 0, 10 };
+    EXPECT_EQ(ERR_PARAM, get_filenames_array(&filenames, NULL));
+    EXPECT_EQ(OK, free_filenames_array(&filenames));
+}
+
+TEST(get_filenames_array, correct_data)
+{
+    dyn_array filenames = { NULL, 0, 0, 10 };
+    EXPECT_EQ(OK, get_filenames_array(&filenames, "../tests"));
+    EXPECT_EQ(OK, free_filenames_array(&filenames));
+}
+
+TEST(run_process, err_params)
+{
+    struct sembuf s = { 0, 1, 0 };
+    EXPECT_EQ(ERR_PARAM, run_process(NULL, NULL, NULL, 1, 3, &s, &s, 0));
+    topfiles var = { { 0 }, { 0 } };
+    dyn_array filenames = { NULL, 0, 0, 10 };
+    EXPECT_EQ(ERR_PARAM, run_process(&var, &filenames, "str", 1, 3, NULL, \
+              NULL, 0));
+    EXPECT_EQ(ERR_PARAM, run_process(&var, &filenames, "str", -1, -1, &s, &s,\
+              0));
+}
+
+TEST(find_topfiles, no_str)
+{
+    topfiles var = { { 0 }, { 0 } };
+    int count[TOP_COUNT] = { 0 };
+    int rc = find_topfiles(&var, "../tests", "no_such_str");
+    EXPECT_EQ(OK, rc);
+    EXPECT_EQ(OK, memcmp(var.count, count, TOP_COUNT * sizeof(int)));
+}
+
+TEST(find_topfiles, correct_data)
+{
+    topfiles var = { { 0 }, { 0 } };
+    int count[TOP_COUNT] = { 33, 32, 26, 22, 19 };
+    char *name[TOP_COUNT] = {(char*)"6.txt", (char*)"5.txt", (char*)"10.txt",\
+                             (char*)"15.txt", (char*)"21.txt"};                       
+    int rc = find_topfiles(&var, "../tests", "was");
+    EXPECT_EQ(OK, rc);
+    EXPECT_EQ(OK, memcmp(var.count, count, TOP_COUNT * sizeof(int)));
     EXPECT_EQ(OK, cmp_char_array(name, var.name, TOP_COUNT));
 }
 

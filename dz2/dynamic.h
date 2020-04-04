@@ -1,7 +1,6 @@
 #ifndef __DYNAMIC_H__
 #define __DYNAMIC_H__
 
-#include <stdlib.h>
 #include <sys/sysinfo.h>
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -9,16 +8,18 @@
 #include <sys/sem.h>
 #include <sys/stat.h>
 #include <sys/shm.h>
+#include "extra_func.h"
 
-typedef struct array_t
-{
-    char **data;
-    int len;
-    int size;
-    int step;
-} dyn_array;
-
-int get_filenames_array(dyn_array *f_names, DIR *dp);
+/* 
+ * str - искомая строка запроса
+ * dir_name - имя директории с файлами для поиска
+ * f_names - указатель на структуру, хранящей все имена файлов для поиска
+ * res - результат в виде структуры из массивов имён файлов и кол-в str в них
+ * Функция открывает все файлы в директории и посимвольно ищет вхождения стро-
+ * ки, формируя результат внутри структуры
+ */
+int find_topfiles(topfiles *res, dyn_array *f_names, const char *dir_name, \
+                  const char *str);
 
 int run_process(topfiles *res, dyn_array *f_names, const char *str, \
                int begin, int size, struct sembuf *start, struct sembuf *end,\

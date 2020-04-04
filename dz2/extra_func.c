@@ -74,3 +74,51 @@ int get_str_count(const char *file, const char *str, int *count)
         rc = ERR_IO;
     return rc;
 }
+
+int get_filenames_array(dyn_array *f_names, const char *dir_name)
+{
+    if (!f_names || !dir_name)
+        return ERR_PARAM;
+
+    int rc = OK;
+    DIR *dp = opendir(dir_name);
+    if (dp)
+    {
+        struct dirent *dirp = NULL;
+        while (rc == OK && (dirp = readdir(dp)))
+        {
+            if (f_names->len == f_names->size)
+            {
+                char **tmp = (char**) realloc(f_names->data, (f_names->size +\
+                                              f_names->step) * sizeof(char*));
+                if (tmp)
+                {
+                    f_names->data = tmp;
+                    f_names->size += f_names->step;
+                }
+                else
+                    rc = ERR_MEM;
+            }
+            if (rc == OK)
+            {
+                f_names->data[f_names->len] = strdup(dirp->d_name);
+                f_names->len += 1;
+            }
+        }
+        closedir(dp);
+    }
+    else
+        rc = ERR_IO;
+    return rc;
+}
+
+int free_filenames_array(dyn_array *f_names)
+{
+    if (!f_names)
+        return ERR_PARAM;
+
+    for (int i = 0; i < f_names->len; i++)
+        free(f_names->data[i]);
+    free(f_names->data);
+    return OK;
+}

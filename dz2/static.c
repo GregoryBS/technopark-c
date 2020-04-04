@@ -1,26 +1,21 @@
-#include "lib.h"
+#include "static.h"
 
-int find_topfiles(topfiles *res, const char *dir_name, const char *str)
+int find_topfiles(topfiles *res, dyn_array *f_names, const char *dir_name, \
+                  const char *str)
 {
-    if (!res || !dir_name || !str)
+    if (!res || !f_names || !dir_name || !str)
         return ERR_PARAM;
 
-    int rc = OK;
-    DIR *dp = opendir(dir_name);
-    if (dp)
+    char cur_dir[PATH_MAX] = {};
+    readlink("/proc/self/exe", cur_dir, PATH_MAX);
+    chdir(dir_name);
+    int count = 0, flag = OK;
+    for (int i = 0; i < f_names->len; i++)
     {
-        chdir(dir_name);
-        struct dirent *dirp = NULL;
-        int count = 0, flag = OK;
-        while ((dirp = readdir(dp)))
-        {
-            flag = get_str_count(dirp->d_name, str, &count);
-            if (flag == OK)
-                change_result(res, dirp->d_name, count);
-        }
-        closedir(dp);
+        flag = get_str_count(f_names->data[i], str, &count);
+        if (flag == OK)
+            change_result(res, f_names->data[i], count);
     }
-    else
-        rc = ERR_IO;
-    return rc;
+    chdir(cur_dir);
+    return OK;
 }

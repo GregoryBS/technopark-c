@@ -30,14 +30,11 @@ before_script:
   - cmake ..
 
 script:
-  - make st_main.out
-  - make dyn_main.out
-  - sh ../diff_test.sh
+  - make main.out
+  - valgrind ./main.out ../tests you
   - cppcheck —inconclusive —enable=all —check-config —suppress=missingIncludeSystem -q -v --error-exitcode=1 ../
-  - make st_test.out
-  - ./st_test.out
-  - make dyn_test.out
-  - ./dyn_test.out
+  - make test.out
+  - ./test.out
 
 after_script:
   - lcov --directory . --capture --output-file coverage.info
