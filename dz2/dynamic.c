@@ -1,6 +1,6 @@
 #include "dynamic.h"
 
-int find_topfiles(topfiles *res, dyn_array *f_names, const char *dir_name, \
+int find_topfiles_p(topfiles *res, dyn_array *f_names, const char *dir_name, \
                   const char *str)
 {
     if (!res || !f_names || !dir_name || !str)

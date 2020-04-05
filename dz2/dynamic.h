@@ -18,7 +18,7 @@
  * Функция открывает все файлы в директории и посимвольно ищет вхождения стро-
  * ки, формируя результат внутри структуры
  */
-int find_topfiles(topfiles *res, dyn_array *f_names, const char *dir_name, \
+int find_topfiles_p(topfiles *res, dyn_array *f_names, const char *dir_name, \
                   const char *str);
 
 int run_process(topfiles *res, dyn_array *f_names, const char *str, \
