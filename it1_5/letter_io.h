@@ -18,6 +18,6 @@ int read_text(char **text, char delimiter);
 
 int read_letter(letter *ltr);
 
-void free_mem(letter ltr);
+void free_mem(letter *ltr);
 
 #endif

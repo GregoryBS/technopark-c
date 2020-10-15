@@ -1,11 +1,14 @@
 #include "letter_io.h"
 
-void free_mem(letter ltr)
+void free_mem(letter *ltr)
 {
-    free(ltr.sender);
-    free(ltr.receiver);
-    free(ltr.theme);
-    free(ltr.text);
+    if (ltr)
+    {
+        free(ltr->sender);
+        free(ltr->receiver);
+        free(ltr->theme);
+        free(ltr->text);
+    }
 }
 
 int read_letter(letter *ltr)
@@ -14,20 +17,20 @@ int read_letter(letter *ltr)
         return ERR_PARAM;
 
     int rc = read_text(&(ltr->sender), '\n');
+    if (rc != OK)
+        return rc;
+
+    rc = read_text(&(ltr->receiver), '\n');
     if (rc == OK)
     {
-        rc = read_text(&(ltr->receiver), '\n');
+        rc = read_text(&(ltr->theme), '\n');
         if (rc == OK)
         {
-            rc = read_text(&(ltr->theme), '\n');
-            if (rc == OK)
-            {
-                rc = read_text(&(ltr->text), '\0');
-            }
+            rc = read_text(&(ltr->text), '\0');
         }
     }
     if (rc != OK)
-        free_mem(*ltr);
+        free_mem(ltr);
     return rc;
 }
 
@@ -51,7 +54,10 @@ int read_text(char **text, char delimiter)
                 s.size += s.space;
             }
             else
+            {
+                free(s.data);
                 rc = ERR_MEM;
+            }
         }
         if (rc == OK)
         {

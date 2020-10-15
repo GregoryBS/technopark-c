@@ -11,7 +11,7 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 set(FILES
         letter_io.c
-        func.c)
+        spam.c)
 add_library(_files STATIC ${FILES})
 
 add_executable(main.out main.c)
