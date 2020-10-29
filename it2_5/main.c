@@ -3,7 +3,7 @@
 #include "file.h"
 #include "sequential.h"
 
-#define NANOS 10e9
+#define NANOS 1e9
 
 int main(int argc, char **argv)
 {
